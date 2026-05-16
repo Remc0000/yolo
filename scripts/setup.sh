@@ -4,6 +4,7 @@ set -euo pipefail
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 readme_path="$repo_root/docs/README.md"
 
+# Delay between link-open requests, in seconds.
 BROWSER_OPEN_DELAY_SECONDS=0.5
 
 open_links=false
@@ -18,7 +19,7 @@ if $open_links; then
   elif command -v open >/dev/null 2>&1; then
     opener="open"
   else
-    echo "No supported link opener found. Use xdg-open (Linux) or open (macOS). Windows users can open the URLs manually." >&2
+    echo "No supported link opener found. This script supports xdg-open (Linux) and open (macOS)." >&2
     exit 1
   fi
 fi
@@ -43,7 +44,7 @@ if [[ ${#steps[@]} -eq 0 ]]; then
   exit 1
 fi
 
-echo "Running the \"Where to start?\" steps:"
+echo "Displaying the \"Where to start?\" steps:"
 
 for i in "${!steps[@]}"; do
   name="${steps[$i]%%|*}"
