@@ -5,7 +5,7 @@ repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 readme_path="$repo_root/docs/README.md"
 
 # Delay between link-open requests, in seconds.
-BROWSER_OPEN_DELAY_SECONDS=0.5
+browser_open_delay_seconds=0.5
 
 open_links=false
 if [[ "${1:-}" == "--open" ]]; then
@@ -52,7 +52,7 @@ for i in "${!steps[@]}"; do
   printf '%d. %s\n   %s\n' "$((i + 1))" "$name" "$url"
   if [[ -n "$opener" ]]; then
     "$opener" "$url" >/dev/null 2>&1 &
-    sleep "$BROWSER_OPEN_DELAY_SECONDS"
+    sleep "$browser_open_delay_seconds"
   fi
 done
 
