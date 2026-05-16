@@ -4,7 +4,7 @@ set -euo pipefail
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 readme_path="$repo_root/docs/README.md"
 
-# Delay between link-open requests, in seconds.
+# Delay between link-open requests, in seconds, to avoid overwhelming browser/tab handlers.
 browser_open_delay_seconds=0.5
 
 open_links=false
@@ -30,6 +30,7 @@ if [[ ! -f "$readme_path" ]]; then
 fi
 
 mapfile -t steps < <(awk '
+  # Parse links from the "Where to start?" section in docs/README.md.
   /^## Where to start\?/ { in_section=1; next }
   in_section && /^## / { in_section=0 }
   in_section && /^- / {
