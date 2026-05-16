@@ -1,13 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-steps=(
-  "Galaxy Trivia|https://github.com/ParanoidUser/yolo/discussions/categories/galaxy-trivia?discussions_q=category%3A%22Galaxy+Trivia%22+is%3Aunanswered+is%3Aopen"
-  "YOLO badge|https://github.com/ParanoidUser/yolo/discussions/18"
-  "Starstruck|https://github.com/ParanoidUser/yolo/discussions/385"
-  "Pair Extraordinaire|https://github.com/ParanoidUser/yolo/discussions/26"
-  "Mysterious badges|https://github.com/ParanoidUser/yolo/discussions/30"
-)
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+readme_path="$repo_root/docs/README.md"
 
 BROWSER_OPEN_DELAY_SECONDS=0.5
 
@@ -26,6 +21,26 @@ if $open_links; then
     echo "No supported link opener found. Use xdg-open (Linux) or open (macOS). Windows users can open the URLs manually." >&2
     exit 1
   fi
+fi
+
+if [[ ! -f "$readme_path" ]]; then
+  echo "README not found at: $readme_path" >&2
+  exit 1
+fi
+
+mapfile -t steps < <(awk '
+  /^## Where to start\?/ { in_section=1; next }
+  in_section && /^## / { in_section=0 }
+  in_section && /^- / {
+    if (match($0, /\[([^]]+)\]\((https?:\/\/[^)]+)\)/, found)) {
+      print found[1] "|" found[2]
+    }
+  }
+' "$readme_path")
+
+if [[ ${#steps[@]} -eq 0 ]]; then
+  echo "No getting-started links found in $readme_path" >&2
+  exit 1
 fi
 
 echo "Running the \"Where to start?\" steps:"
