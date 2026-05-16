@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-readme_path="$repo_root/docs/README.md"
-
 steps=(
   "Galaxy Trivia|https://github.com/ParanoidUser/yolo/discussions/categories/galaxy-trivia?discussions_q=category%3A%22Galaxy+Trivia%22+is%3Aunanswered+is%3Aopen"
   "YOLO badge|https://github.com/ParanoidUser/yolo/discussions/18"
@@ -29,7 +26,6 @@ if $open_links; then
   fi
 fi
 
-echo "Using README: $readme_path"
 echo "Running the \"Where to start?\" steps:"
 
 for i in "${!steps[@]}"; do
@@ -38,6 +34,7 @@ for i in "${!steps[@]}"; do
   printf '%d. %s\n   %s\n' "$((i + 1))" "$name" "$url"
   if [[ -n "$opener" ]]; then
     "$opener" "$url" >/dev/null 2>&1 &
+    sleep 0.5
   fi
 done
 
