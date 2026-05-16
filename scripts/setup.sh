@@ -9,6 +9,8 @@ steps=(
   "Mysterious badges|https://github.com/ParanoidUser/yolo/discussions/30"
 )
 
+BROWSER_OPEN_DELAY_SECONDS=0.5
+
 open_links=false
 if [[ "${1:-}" == "--open" ]]; then
   open_links=true
@@ -21,7 +23,7 @@ if $open_links; then
   elif command -v open >/dev/null 2>&1; then
     opener="open"
   else
-    echo "No link opener found. Install xdg-open (Linux) or use macOS 'open'." >&2
+    echo "No supported link opener found. Use xdg-open (Linux) or open (macOS). Windows users can open the URLs manually." >&2
     exit 1
   fi
 fi
@@ -34,7 +36,7 @@ for i in "${!steps[@]}"; do
   printf '%d. %s\n   %s\n' "$((i + 1))" "$name" "$url"
   if [[ -n "$opener" ]]; then
     "$opener" "$url" >/dev/null 2>&1 &
-    sleep 0.5
+    sleep "$BROWSER_OPEN_DELAY_SECONDS"
   fi
 done
 
