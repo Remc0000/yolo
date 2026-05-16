@@ -23,6 +23,20 @@ Whether your goal is to master Git merging or help to solve an issue or ask for 
 - Read the latest news about the [Mysterious badges](https://github.com/ParanoidUser/yolo/discussions/30) (*yet to be discovered*).
 - Consider supporting the project by becoming a [sponsor](https://github.com/sponsors/ParanoidUser?frequency=one-time) (*and yes, there is a special badge for it* 😊).
 
+### Automate the getting-started steps
+
+From the repository root:
+
+```bash
+./scripts/setup.sh
+```
+
+To automatically open all "Where to start?" links in your browser:
+
+```bash
+./scripts/setup.sh --open
+```
+
 ## Credits ❤
 
  - Shout out to [@Schweinepriester & squad](https://github.com/Schweinepriester/github-profile-achievements) for all the achievement knowledge they shared.
